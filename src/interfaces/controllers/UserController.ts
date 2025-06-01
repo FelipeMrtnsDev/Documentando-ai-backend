@@ -5,6 +5,7 @@ import { AuthenticateUserUseCase } from "../../application/use-cases/User-usecas
 import { DeleteUserUseCase } from "src/application/use-cases/User-usecase/DeleteUserUseCase.js";
 import { ListOneUserUseCase } from "src/application/use-cases/User-usecase/ListOneUserUseCase.js";
 import jwt from "jsonwebtoken"
+import { UpdateUserUseCase } from "src/application/use-cases/User-usecase/UpdateUserUseCase.js";
 
 export class UserController {
   constructor(
@@ -13,6 +14,7 @@ export class UserController {
     private authenticateUserUseCase: AuthenticateUserUseCase,
     private deleteUserUseCase: DeleteUserUseCase,
     private listOneUserUseCase: ListOneUserUseCase,
+    private updateUserUseCase: UpdateUserUseCase
   ) {}
 
   async create(req: Request, res: Response): Promise<Response> {
@@ -85,6 +87,25 @@ export class UserController {
         name,
       });
       return res.status(200).send({ token });
+    } catch (error) {
+      const err = error as Error;
+      return res.status(400).json({ message: err.message });
+    }
+  }
+
+  async update(req: Request, res: Response): Promise<Response> {
+    const { name, email, password, picture, username, id } = req.body;
+
+    try {
+      await this.updateUserUseCase.execute({
+        id,
+        name,
+        email,
+        password,
+        picture,
+        username,
+      });
+      return res.status(201).send();
     } catch (error) {
       const err = error as Error;
       return res.status(400).json({ message: err.message });

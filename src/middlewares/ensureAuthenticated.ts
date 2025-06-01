@@ -16,12 +16,14 @@ export function ensureAuthenticated(req: Request, res: Response, next: NextFunct
   const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = jwt.verify(token, "secreta123") as Payload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as Payload;
+
     req.user = {
       id: decoded.id,
-    }
+    };
+
     next();
-  } catch(error) {
+  } catch (error) {
     res.status(401).json({ message: "Token inválido" });
   }
 }

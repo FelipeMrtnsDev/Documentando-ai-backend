@@ -7,8 +7,10 @@ export class ListOneReadmeByUserUseCase {
   async execute(readmeId: string, userId: string): Promise<Readme> {
     const readme = await this.readmeRepository.findById(readmeId);
 
-    if (!readme || readme.userId !== userId) {
-      throw new Error("Readme não encontrado ou não pertence ao usuário");
+    if (!readme) {
+      throw new Error("Readme não encontrado");
+    } else if (readme.userId !== userId) {
+      throw new Error("Readme não pertence ao usuário");
     }
 
     return readme;

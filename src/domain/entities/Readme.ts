@@ -2,19 +2,19 @@ export class Readme {
   public readonly id: string;
   public readonly userId: string;
   public readonly title: string;
-  public readonly stats: string;
+  public readonly stats: string | null;
   public readonly description: string;
   public readonly template: string;
-  public readonly tag: string;
+  public readonly tag: string | null;
 
   constructor(props: {
     id: string;
     userId: string;
     title: string;
-    stats: string;
+    stats: string | null;
     description: string;
     template: string;
-    tag: string;
+    tag: string | null;
   }) {
     this.id = props.id;
     this.userId = props.userId;

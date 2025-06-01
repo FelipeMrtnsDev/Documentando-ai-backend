@@ -13,10 +13,7 @@ interface CreateReadmeDTO {
 }
 
 export class CreateReadmeUseCase {
-  constructor(
-    private readmeRepository: IReadmeRepository,
-    private userRepository: IUserRepository
-  ) {}
+  constructor(private readmeRepository: IReadmeRepository) {}
 
   async execute({
     title,
@@ -26,12 +23,6 @@ export class CreateReadmeUseCase {
     tag,
     userId
   }: CreateReadmeDTO): Promise<void> {
-    const userExists = await this.userRepository.findById(userId);
-
-    if (!userExists) {
-      throw new Error("Usuário não encontrado");
-    }
-
     const readme = new Readme({
       id: randomUUID(),
       title,
@@ -45,3 +36,4 @@ export class CreateReadmeUseCase {
     await this.readmeRepository.create(readme);
   }
 }
+

@@ -7,6 +7,7 @@ import { AuthenticateUserUseCase } from "../../application/use-cases/User-usecas
 import { ensureAuthenticated } from "../../middlewares/ensureAuthenticated.js";
 import { DeleteUserUseCase } from "src/application/use-cases/User-usecase/DeleteUserUseCase.js";
 import { ListOneUserUseCase } from "src/application/use-cases/User-usecase/ListOneUserUseCase.js";
+import { UpdateUserUseCase } from "src/application/use-cases/User-usecase/UpdateUserUseCase.js";
 
 const router = Router();
 
@@ -16,12 +17,14 @@ const listUserUseCase = new ListUsersUseCase(userRepository);
 const deleteUserUseCase = new DeleteUserUseCase(userRepository);
 const listOneUserUseCase = new ListOneUserUseCase(userRepository)
 const authenticateUserUseCase = new AuthenticateUserUseCase(userRepository);
+const updateUserUseCase = new UpdateUserUseCase(userRepository)
 const userController = new UserController(
   createUserUseCase,
   listUserUseCase,
   authenticateUserUseCase,
   deleteUserUseCase,
-  listOneUserUseCase
+  listOneUserUseCase,
+  updateUserUseCase
 );
 
 router.get("/users", ensureAuthenticated, async (req, res) => {
@@ -38,6 +41,10 @@ router.delete("/user/:id", ensureAuthenticated, async (req, res) => {
 
 router.post("/user", async (req, res) => {
   await userController.create(req, res); //ok
+});
+
+router.put("/user", ensureAuthenticated, async (req, res) => {
+  await userController.update(req, res); //ok
 });
 
 router.post("/login", async (req, res) => {
